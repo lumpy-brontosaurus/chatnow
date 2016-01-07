@@ -1,0 +1,22 @@
+{
+  "name": "chatnow",
+  "version": "1.0.0",
+  "description": "realtime chat app with geolocation",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joksina/chatnow.git"
+  },
+  "author": "Ajoke Salaudeen, Hridhya Vijayakumaran, Lyly Nguyen, Ron Lapushner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joksina/chatnow/issues"
+  },
+  "homepage": "https://github.com/joksina/chatnow#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
