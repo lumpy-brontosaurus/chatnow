@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/joksina/chatnow/issues"
   },
-  "homepage": "https://github.com/joksina/chatnow#readme"
+  "homepage": "https://github.com/joksina/chatnow#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
 }
