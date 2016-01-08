@@ -1,5 +1,27 @@
 var app = angular.module('geoChat', ['ui.router']);
 
+function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+  
+    if (response.status === 'connected') {
+    
+    } else if (response.status === 'not_authorized') {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into this app.';
+    } else {
+      document.getElementById('status').innerHTML = 'Please log ' +
+        'into Facebook.';
+    }
+  }
+
+  function checkLoginState() {
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
+
+
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '438180583036734',
@@ -39,7 +61,15 @@ app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) 
       }
     });
   }
+
+
+  $scope.FBLogout = function(){
+    FB.logout(function(response) {
+      console.log("You are logged out");
+    });
+  }
 }]);
+
 
 app.config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('/login');
