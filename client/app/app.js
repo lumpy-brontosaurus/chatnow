@@ -89,13 +89,19 @@ app.value('messageFormatter', function(date, nick, message) {
 });
 
 app.config(function($stateProvider, $urlRouterProvider){
-  $urlRouterProvider.otherwise('/home');
+  $urlRouterProvider.otherwise('/login');
 
   $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'app/auth/login.html',
+        controller: 'SocketCtrl'
+      })
 
-  .state('home', {
-      url: '/home',
-    templateUrl: 'app/chat/chat.html',
-    controller: 'SocketCtrl'
+  $stateProvider
+      .state('home', {
+        url: '/home',
+        templateUrl: 'app/chat/chat.html',
+        controller: 'SocketCtrl'
   })
 });
