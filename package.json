@@ -18,17 +18,13 @@
   },
   "homepage": "https://github.com/joksina/chatnow#readme",
   "dependencies": {
-<<<<<<< HEAD
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
+    "mongoose": "~3.8.8",
     "morgan": "^1.6.1",
     "socket.io": "^1.4.1",
     "static-favicon": "^1.0.2",
     "stylus": "^0.53.0"
-=======
-    "express": "^4.13.3",
-    "mongoose": "~3.8.8"
->>>>>>> 29f3357596e3e1445935ef63f069bd66b3223830
   }
 }

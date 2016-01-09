@@ -1,12 +1,11 @@
+
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', 'anonymous');
 
 function statusChangeCallback(response) {
     console.log('statusChangeCallback');
     console.log(response);
-  
     if (response.status === 'connected') {
-    
     } else if (response.status === 'not_authorized') {
       document.getElementById('status').innerHTML = 'Please log ' +
         'into this app.';
@@ -20,27 +19,34 @@ function statusChangeCallback(response) {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
-  }
-
+  };
 
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '438180583036734',
+    status     : true,
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.2' // use version 2.2
   });
-  
-  
+
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
-  
-  };
-  
+
+  FB.Event.subscribe('auth.login', function(resp) {
+   window.location = 'http://www.localhost:3000/#/home';
+ });
+    FB.Event.subscribe('auth.logout', function(resp) {
+   window.location = 'http://www.localhost:3000/';
+ });
+
+};
   // Load the SDK asynchronously
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
+    if (d.getElementById(id)){
+      return;
+    }
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
@@ -67,6 +73,7 @@ app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) 
 
   $scope.FBLogout = function(){
     FB.logout(function(response) {
+      FB.Auth.setAuthResponse(null, 'unknown');
       console.log("You are logged out");
     });
   }
@@ -136,4 +143,4 @@ app.config(function($stateProvider, $urlRouterProvider){
         templateUrl: 'app/chat/chat.html',
         controller: 'SocketCtrl'
   })
-});
+})
