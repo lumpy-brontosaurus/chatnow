@@ -52,6 +52,7 @@ app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) 
   $scope.FBLogin = function () {
     FB.login(function(response) {
       if (response.authResponse) {
+      var access_token =   FB.getAuthResponse()['accessToken'];
        console.log('Welcome!  Fetching your information.... ');
        FB.api('/me', function(response) {
          console.log('Good to see you, ' + response.name + '.', response);
@@ -59,7 +60,7 @@ app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) 
       } else {
        console.log('User cancelled login or did not fully authorize.');
       }
-    });
+    }, {scope: ''});
   }
 
 
