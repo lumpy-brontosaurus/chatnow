@@ -1,8 +1,8 @@
+<div ng-controller:="AuthCtrl">
+     <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button>
+</div>
 <div class='container'>
     <div ng-controller='SocketCtrl'>
-        You are known as: <span ng-bind="nickName"></span>.
-        <br/>
-        Change your nickname with <code>/nick [yourNewNick]</code>
         <div class='row'>
             <div class='col-md-9'>
         <textarea style='width: 100%; height: 200px'
@@ -26,6 +26,8 @@
                                 ng-click="sendMessage(message)">Send!</button>
                     </div>
                 </form>
+                    <!-- <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button> -->
+
             </div>
         </div>
     </div>
