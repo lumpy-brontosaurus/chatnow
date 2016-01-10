@@ -1,4 +1,5 @@
 
+var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', 'anonymous');
 
@@ -33,9 +34,9 @@ window.fbAsyncInit = function() {
     statusChangeCallback(response);
   });
 
-  FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'http://www.localhost:3000/#/home';
- });
+ //  FB.Event.subscribe('auth.login', function(resp) {
+ //   window.location = 'http://www.localhost:3000/#/home';
+ // });
     FB.Event.subscribe('auth.logout', function(resp) {
    window.location = 'http://www.localhost:3000/';
  });
@@ -55,20 +56,28 @@ window.fbAsyncInit = function() {
 
 app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) {
 
+$scope.FBLogin = function(){
+  FB.login(function(response) {
+   if (response.authResponse) {
+     $scope.access_token =   FB.getAuthResponse()['accessToken'];
+     console.log('Access Token = '+ $scope.access_token);
+     FB.api('/me', function(response) {
+     console.log('Good to see you, ' + response.name + '.');
+     });
+   } else {
+     console.log('User cancelled login or did not fully authorize.');
+   }
+ }, {scope: ''})};
 
-  $scope.FBLogin = function () {
-    FB.login(function(response) {
-      if (response.authResponse) {
-      var access_token =   FB.getAuthResponse()['accessToken'];
-       console.log('Welcome!  Fetching your information.... ');
-       FB.api('/me', function(response) {
-         console.log('Good to see you, ' + response.name + '.', response);
-       });
-      } else {
-       console.log('User cancelled login or did not fully authorize.');
-      }
-    }, {scope: ''});
-  }
+
+    $scope.FBFriends = function() {
+      FB.api('/me/friends?access_token=CAACEdEose0cBAOFb2I48BVndlIFAMeJvjmZCdb2ZC4iNHQvE5hiDbiM7Mo2GiQ8LIh0M8zreBh69qKpRFtNzT7hZC12MIsp14js8kM2ARI4ZAziti8MzpCu0tdNgYAz3DANYz22gHHNIZBjmXiZAOEg3SeGfXCmrEfxoyO9sWi7fODah2QherVrk0ZAZCYAhl6bEZBJ2z2uoAKZBfv0eokw0wa', function(response) {
+        $scope.$apply(function() {
+          $scope.myFriends = response.data;
+          console.log(response);
+        });
+      });
+    };
 
 
   $scope.FBLogout = function(){
