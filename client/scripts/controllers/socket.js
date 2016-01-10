@@ -3,7 +3,7 @@
 angular.module('chatApp')
 .controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
   $scope.nickName = nickName;
-  $scope.messageLog = 'Ready to chat!';
+  $scope.messageLog = '';
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 

@@ -34,9 +34,9 @@ window.fbAsyncInit = function() {
     statusChangeCallback(response);
   });
 
- //  FB.Event.subscribe('auth.login', function(resp) {
- //   window.location = 'http://www.localhost:3000/#/home';
- // });
+  FB.Event.subscribe('auth.login', function(resp) {
+   window.location = 'http://www.localhost:3000/#/home';
+ });
     FB.Event.subscribe('auth.logout', function(resp) {
    window.location = 'http://www.localhost:3000/';
  });
@@ -72,7 +72,8 @@ $scope.FBLogin = function(){
    } else {
      console.log('User cancelled login or did not fully authorize.');
    }
- }, {scope: ''})};
+ }, {scope: ''});
+};
 
 
     $scope.FBFriends = function() {
