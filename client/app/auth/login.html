@@ -1,30 +1,33 @@
 <div ng-controller="AuthCtrl">
-    <div class='main'>
-        <div class = 'container'>
+    <div class = 'container'>
+      <!--   <div id="fbButton">
+            <button class="btn btn-primary" ng-click="FBLogin()">Login With Facebook</button>
+            <!-<h1>{{name}}</h1> -->
+       <!--  </div> --> 
+        <form class="login-form" name="signinForm" ng-submit='FBLogin()'>
+            <a ui-sref="#">Don't have a Facebook account? <strong>Signin Below</strong></a>
+            <label for = "inputUsername" class = 'sr-only'>Username</label>
+            <input type = "text" id = "inputUsername" class = "form-control" placeholder="Username" required autofocus ng-model='user.username'>
+            <br>
+            <label for = "inputPassword" class = 'sr-only'>Password</label>
+            <input type= "password" id="inputPassword" class = "form-control" placeholder="Password" ng-model='user.password' required>
+            <br>
+            <button class = 'btn btn-lg btn-primary btn-block'>Sign In</button>
 
-    <form class="login-form" name="signinForm" ng-submit='FBLogin()'>
-
-        <h2>Please sign in</h2>
-        <label for = "inputUsername" class = 'sr-only'>Username</label>
-        <input type = "text" id = "inputUsername" class = "form-control" placeholder="Username" required autofocus ng-model='user.username'>
+        </form>
         <br>
-        <label for = "inputPassword" class = 'sr-only'>Password</label>
-        <input type= "password" id="inputPassword" class = "form-control" placeholder="Password" ng-model='user.password' required>
-        <br>
-        <button class = 'btn btn-lg btn-primary btn-block'>Sign In</button>
+        <div id="status"></div>
 
-    </form>
 
-    <div id="status"></div>
     </div>
     <button class="btn btn-primary" ng-click="FBLogin()">FB Login</button>
-<h1>{{name}}</h1>
+<button class="btn btn-primary" ng-click="FBFriends()">FB Friends</button>
+     <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button>
+
+<div>{{myFriends}}</div>
 
 
 </div>
-
-
-
 </div>
 
 
