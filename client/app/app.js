@@ -96,7 +96,15 @@ $scope.FBLogin = function(){
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  $scope.nickName = nickName;
+  if(statusChangeCallback(response).authResponse.id !== undefined){
+        FB.api('/me', function(response) {
+            console.log('Good to see you, ' + response.name + '.');
+            var accessToken = FB.getAuthResponse().accessToken;
+            console.log(accessToken);
+            username = response.name;
+        });
+    }
+  $scope.nickName = username;
   $scope.messageLog = '';
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
