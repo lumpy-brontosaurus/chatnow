@@ -57,6 +57,7 @@ $scope.FBLogin = function(){
      FB.api('/me', function(response) {
      console.log('Good to see you, ' + response.name + '.');
      // console.log(response);
+     $scope.name = response.name;
      var accessToken = FB.getAuthResponse().accessToken;
      console.log(accessToken);
      });
