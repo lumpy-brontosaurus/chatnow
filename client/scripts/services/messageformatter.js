@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('chatApp')
-  .value('messageFormatter', function(date, nick, message) {
+  .value('messageFormatter', function(date, username, message) {
     return date.toLocaleTimeString() + ' - ' + 
-           nick + ' : ' + 
+           username + ' : ' + 
            message + '\n';
     
   });
