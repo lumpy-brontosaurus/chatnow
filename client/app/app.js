@@ -22,7 +22,7 @@ app.factory('User', ['$http', function( $http) {
                 url: '/api/add'
             })
                 .then(function (resp) {
-                    console.log(resp);
+                    console.log(resp.data);
                     return resp.data;
                 });
         }
@@ -76,7 +76,7 @@ window.fbAsyncInit = function() {
   }(document, 'script', 'facebook-jssdk'));
 
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
-    $scope.username = [];
+    // $scope.username = [];
     $scope.FBLogin = function(){
         FB.login(function(response) {
             if (response.authResponse) {
