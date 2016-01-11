@@ -33,6 +33,7 @@ function statusChangeCallback(response) {
     if (response.status === 'connected') {
         FB.api('/me', function (response) {
             username = response.name;
+            console.log(username);
         });
     }
 }
@@ -95,6 +96,7 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                          .then(function (resData){
                              console.log(resData[1].user);
                              username = resData[1].user;
+                             console.log(resData);
                         })
                         .catch(function (error){
                             console.log(error);
