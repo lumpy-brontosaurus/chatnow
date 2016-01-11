@@ -1,6 +1,6 @@
 
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', username);
+    .value('username', username);
 
 var username;
 var access_token;
@@ -95,8 +95,8 @@ $scope.FBLogin = function(){
 }]);
 
 
-app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  $scope.nickName = nickName;
+app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, username) {
+  $scope.username = username;
   $scope.messageLog = '';
   $scope.FBLogout = function(){
         FB.logout(function(response) {
@@ -107,17 +107,17 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     var match = $scope.message.match('^\/nick (.*)');
 
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-      var oldNick = nickName;
-      nickName = match[1];
+      var oldNick = username;
+      username = match[1];
       $scope.message = '';
       $scope.messageLog = messageFormatter(new Date(),
-              nickName, 'nickname changed - from ' +
-              oldNick + ' to ' + nickName + '!') + $scope.messageLog;
-      $scope.nickName = nickName;
+              username, 'username changed - from ' +
+              oldNick + ' to ' + username + '!') + $scope.messageLog;
+      $scope.username = username;
     }
 
     $log.debug('sending message', $scope.message);
-    chatSocket.emit('message', nickName, $scope.message);
+    chatSocket.emit('message', username, $scope.message);
     $scope.message = '';
   }
 
