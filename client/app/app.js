@@ -6,8 +6,10 @@ var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ng
 var username = '';
 
 function statusChangeCallback(response) {
-    console.log(response.data);
-    // console.log(username);
+    if (response.status === 'connected') {
+     FB.api('/me', function(response) {
+        console.log("here");
+            console.log(JSON.stringify(response));
   }
 
   function checkLoginState() {
