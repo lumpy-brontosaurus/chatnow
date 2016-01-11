@@ -57,7 +57,7 @@ window.fbAsyncInit = function() {
   });
 
   FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'http://chat-geo.herokuapp.com/#/home';
+   window.location = 'https://chat-geo.herokuapp.com/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
    window.location = 'https://chat-geo.herokuapp.com/';
