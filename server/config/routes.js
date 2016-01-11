@@ -8,10 +8,11 @@ module.exports = function(app){
     var posObj = [{user:'', position:''}];
     var user = '';
 
-    app.post('/home/add', function(req, res){
+    app.post('/add', function(req, res){
         console.log('POST');
         user = req.body;
-        posObj.push({user: user})
+        posObj.push({user: user});
+        res.send(204,'Posted');
     });
 
     app.get('/position', function(req, res){

@@ -92,7 +92,7 @@ app.factory('User', ['$http', function( $http) {
         addUser: function (user) {
             return $http({
                 method: 'POST',
-                url: '/home/add',
+                url: '/add',
                 data: user
 
             })
@@ -105,14 +105,6 @@ app.factory('User', ['$http', function( $http) {
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-    //if(statusChangeCallback().authResponse.id !== undefined){
-    //    FB.api('/me', function(response) {
-    //        console.log('Good to see you, ' + response.name + '.');
-    //        var accessToken = FB.getAuthResponse().accessToken;
-    //        console.log(accessToken);
-    //        username = response.name;
-    //    });
-    //}
   $scope.nickName = username;
   $scope.messageLog = 'Ready to chat!';
 
