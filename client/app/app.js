@@ -1,32 +1,29 @@
-var username;
-var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize', 'btford.socket-io', 'ngMap'])
-  .value('nickName', username);
-
-var access_token;
+var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
+    .value('nickName', 'anonymous');
+var username = '';
 
 function statusChangeCallback(response) {
-  if (response.status === 'connected') {
-    FB.api('/me', function (response) {
-      console.log("here");
-      console.log(JSON.stringify(response));
-      username = response.name;
-      console.log(username);
-    });
-  }
+    if (response.status === 'connected') {
+        FB.api('/me', function(response) {
+            console.log("here");
+            console.log(JSON.stringify(response));
+            username = response.name;
+        });
+    }
 }
 
 function checkLoginState() {
-  FB.getLoginStatus(function (response) {
-    statusChangeCallback(response);
-  });
-}
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+    });
+  }
 
 window.fbAsyncInit = function () {
   FB.init({
-    appId: '438180583036734',
-    status: true,
-    xfbml: true,  // parse social plugins on this page
-    version: 'v2.2' // use version 2.2
+    appId      : '438180583036734',
+    status     : true,
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.2'
   });
 
   FB.getLoginStatus(function (response) {
@@ -53,58 +50,77 @@ window.fbAsyncInit = function () {
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));
 
+app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
+    $scope.FBLogin = function(){
+        FB.login(function(response) {
+            if (response.authResponse) {
+                console.log('Welcome! Fetching your information... ');
+                FB.api('/me', function(response) {
+                    console.log('Good to see you, ' + response.name + '.');
+                    var accessToken = FB.getAuthResponse().accessToken;
+                    console.log(accessToken);
+                    username = response.name;
+                    User.addUser(username)
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                });
+     // $scope.$apply();
+            } else {
+                console.log('User cancelled login or did not fully authorize.');
+            }
+        }, {scope: ''});
+    };
+}]);
 
-app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) {
+app.factory('User', ['$http', function( $http) {
+    return {
+        addUser: function (user) {
+            return $http({
+                method: 'POST',
+                url: '/api/add',
+                data: user
 
+            })
+                .then(function (resp) {
+                    return resp;
+                });
+        },
 
-  $scope.FBLogin = function () {
-    FB.login(function (response) {
-      if (response.authResponse) {
-        // $scope.access_token =   FB.getAuthResponse()['accessToken'];
-        // console.log('Access Token = '+ $scope.access_token);
-        console.log('Welcome! Fetching your information... ');
-        FB.api('/me', function (response) {
-          console.log('Good to see you, ' + response.name + '.');
-          // console.log(response);
-          var accessToken = FB.getAuthResponse().accessToken;
-          console.log(accessToken);
-        });
-        // $scope.$apply();
-      } else {
-        console.log('User cancelled login or did not fully authorize.');
-      }
-    }, {scope: ''});
-  };
-
-
-  $scope.FBFriends = function () {
-    FB.api('/me/friends?access_token=CAACEdEose0cBAL5TMM7iOge5JauOU5JlAJl6Pt1qzMlkmiwxJo9RezXcY6zWRXslYd1AWZBf43WvULwzg9WKdbGgHL8FqqvOJ8J4582s76sXcoiCT8nZATMSduEFAywHlmZAzoecHNB6b83Wh69GfA3FKDQfAZC9b0faKYLSZAQ8IH4bhetuaoqSV6uTaBZCoxsPDunmtsrAZDZD', function (response) {
-      $scope.$apply(function () {
-        $scope.myFriends = response.data;
-        console.log(response);
-      });
-    });
-  };
-
-
-  $scope.FBLogout = function () {
-    FB.logout(function (response) {
-      console.log("You are logged out");
-    });
-  };
+        getUser: function(user){
+            return $http({
+                method: 'GET',
+                url: '/api/add'
+            })
+                .then(function (resp) {
+                    console.log(resp);
+                    return resp.data;
+                });
+        }
+    }
 }]);
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  $scope.nickName = nickName;
-  $scope.messageLog = '';
-  $scope.sendMessage = function () {
-    var match = $scope.message.match('^\/nick (.*)');
 
+    $scope.newMessages = [];
+    $scope.nickName = username;
+    $scope.messageLog = 'Ready to chat!';
+
+    $scope.FBLogout = function(){
+        FB.logout(function(response) {
+            console.log("You are logged out");
+        });
+    };
+
+
+  $scope.sendMessage = function() {
+    var match = $scope.message.match('^\/nick (.*)');
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
       var oldNick = nickName;
       nickName = match[1];
       $scope.message = '';
+        console.log($scope.messageLog);
       $scope.messageLog = messageFormatter(new Date(),
           nickName, 'nickname changed - from ' +
           oldNick + ' to ' + nickName + '!') + $scope.messageLog;
@@ -122,10 +138,82 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
       return;
     }
-    $scope.$apply(function () {
+
+    $scope.$apply(function() {
       $scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
+        $scope.newMessages.push($scope.messageLog);
+        console.log($scope.messageLog);
     });
   });
+});
+
+
+//map
+app.controller('mapController', function ($scope, $interval, $http, NgMap) {
+
+  var friends = [];
+  var markers = [];
+  var me = { position: { }, marker : new google.maps.Marker() };
+
+
+  var updateMyPosition = function (position) {
+    me.position = { lat: position.coords.latitude, lng: position.coords.longitude};
+    NgMap.getMap().then(function (map) {
+      me.marker.setMap(null);
+      me.marker = new google.maps.Marker({
+        position: me.position,
+        map: map,
+        title: 'Ron'
+      })
+    });
+  };
+  navigator.geolocation.getCurrentPosition(updateMyPosition);
+
+  //test
+  //friends.push(
+  //  {position: new google.maps.LatLng(parseFloat(-70), parseFloat(140)), name: 'Aj'},
+  //  {position: new google.maps.LatLng(parseFloat(-34), parseFloat(150)), name: 'Lyly'},
+  //  {position: new google.maps.LatLng(parseFloat(0), parseFloat(160)), name: 'Random'}
+  //);
+
+  var init = function () {
+
+    //update Positions
+    $interval(function () {
+
+      //Send my location and receive other's location
+      $http({
+        method: 'GET',
+        url: 'http://localhost:3000/location',
+        params: {position: me.position, name: 'Ron'}
+      }).then(function successCallback(response) {
+        friends = [];
+        friends = response.data;
+        NgMap.getMap().then(function (map) {
+
+          //delete old markerss
+          for(var j = 0 ; j < markers.length; j++){
+            markers[j].setMap(null);
+          }
+          markers.splice(0, markers.length);
+
+          //add new markers
+          console.log(friends.length);
+          for (var i = 0; i < friends.length; i++) {
+            markers.push(new google.maps.Marker({
+              position: friends[i].position,
+              map: map,
+              title: friends[i].name
+            }));
+          }
+        });
+      }, function errorCallback(response) {
+        console.log('ajax response failed', response);
+      });
+    }, 3000);
+  };
+
+  init();
 });
 
 app.factory('chatSocket', function (socketFactory) {
@@ -146,11 +234,14 @@ app.config(function ($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
-    .state('login', {
-      url: '/',
-      templateUrl: 'app/auth/login.html',
-      controller: 'SocketCtrl'
-    }).state('home', {
+      .state('login', {
+        url: '/',
+        templateUrl: 'app/auth/login.html',
+        controller: 'SocketCtrl'
+      });
+
+  $stateProvider
+    .state('home', {
       url: '/home',
       templateUrl: 'app/chat/chat.html',
       controller: 'SocketCtrl'
