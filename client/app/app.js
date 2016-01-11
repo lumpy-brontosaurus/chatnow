@@ -194,8 +194,8 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
       //Send my location and receive other's location
       $http({
         method: 'GET',
-        url: 'http://localhost:3000/location',
-        params: {position: me.position, name: 'Ron'}
+        url: 'https://chat-geo.herokuapp.com/location',
+        params: {position: me.position, name: username}
       }).then(function successCallback(response) {
         friends = [];
         friends = response.data;
