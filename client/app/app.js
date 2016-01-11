@@ -7,10 +7,15 @@ var username = '';
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
+
+
+
      FB.api('/me', function(response) {
         console.log("here");
             console.log(JSON.stringify(response));
-  }
+  });
+   }
+ }
 
   function checkLoginState() {
     FB.getLoginStatus(function(response) {
