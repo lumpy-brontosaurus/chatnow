@@ -95,8 +95,8 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                     User.getUser()
                          .then(function (resData){
                              // console.log(resData[1].user);
-                             // username = resData[1].user;
-                             console.log(resData[1].user);
+                             // username = resData[i].user;
+                             console.log(resData);
                         })
                         .catch(function (error){
                             console.log(error);
