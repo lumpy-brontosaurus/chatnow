@@ -1,9 +1,9 @@
 
+var username;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', username);
 
 var access_token;
-var username;
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
