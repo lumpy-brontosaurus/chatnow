@@ -88,8 +88,6 @@ $scope.FBLogin = function(){
 
   $scope.FBLogout = function(){
     FB.logout(function(response) {
-      $scope.access_token =   FB.getAuthResponse()['accessToken'];
-      FB.Auth.setAuthResponse(null, 'unknown');
       console.log("You are logged out");
       // $scope.$apply();
     });
