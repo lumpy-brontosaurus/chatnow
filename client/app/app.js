@@ -3,8 +3,11 @@ var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', 'You');
 
+var username = '';
+
 function statusChangeCallback(response) {
     console.log(response);
+    console.log(username);
   }
 
   function checkLoginState() {
@@ -57,9 +60,9 @@ $scope.FBLogin = function(){
      FB.api('/me', function(response) {
      console.log('Good to see you, ' + response.name + '.');
      // console.log(response);
-     $scope.name = response.name;
      var accessToken = FB.getAuthResponse().accessToken;
      console.log(accessToken);
+     username = response.name;
      });
      // $scope.$apply();
    } else {
