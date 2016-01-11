@@ -1,20 +1,17 @@
 
-var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', username);
 
+var access_token;
 var username = '';
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
-
-
-
-     FB.api('/me', function(response) {
+    FB.api('/me', function(response) {
         console.log("here");
             console.log(JSON.stringify(response));
             username = response.name;
-});  
+    });
    }
   }
 
@@ -84,6 +81,7 @@ $scope.FBLogin = function(){
         $scope.$apply(function() {
           $scope.myFriends = response.data;
           console.log(response);
+          username = response.name;
         });
       });
     };
