@@ -1,38 +1,29 @@
 # Project Name
+GeoChat
 
 > Pithy project description
+This a chat app that helps you track your friends location
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Development Team Members__: Aj Salau, Lyly Nguyen, Hridhya Vijayakumaran, Ron Lapushner 
 
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
 
 ## Usage
 
 > Some usage instructions
+Go to chat-geo.herokuapp.com and explore
 
 ## Requirements
 
 - Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Mongo 2.6.x
+- express
 
 ## Development
 
 ### Installing Dependencies
+express, socket
 
 From within the root directory:
 
