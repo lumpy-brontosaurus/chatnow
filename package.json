@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/joksina/chatnow#readme",
   "dependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "ngmap": "^1.16.6"
   },
   "devDependencies": {
     "jasmine": "^2.4.1",

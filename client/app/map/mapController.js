@@ -4,55 +4,66 @@
 // googlemaps api AIzaSyDaeFJE1l6yYyPpgozt8AN3cQxEeC8A_aI
 app.controller('mapController', function ($scope, $interval, $http, NgMap) {
 
-  $scope.friends = [];
+  var friends = [];
+  var markers = [];
+  var me = {position: {lat: -25.363, lng: 131.044}, name: 'Ron'};
 
-  $scope.friends.push(
-    {position: {lat: 100, lng: 100}, name: 'Aj'},
-    {position: {lat: 150, lng: -100}, name: 'Lyly'},
-    {position: {lat: -100, lng: 50}, name: 'Random'}
+
+  var updateMyPosition = function (position) {
+    me.position = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    console.log(me.position, position.coords.latitude, position.coords.longitude)
+
+  };
+  navigator.geolocation.getCurrentPosition(updateMyPosition);
+
+  //test
+  friends.push(
+    {position: new google.maps.LatLng(parseFloat(-70), parseFloat(140)), name: 'Aj'},
+    {position: new google.maps.LatLng(parseFloat(-34), parseFloat(150)), name: 'Lyly'},
+    {position: new google.maps.LatLng(parseFloat(0), parseFloat(160)), name: 'Random'}
   );
 
-  var vm = this;
-
-  vm.setPositions = function(position) {
-    vm.positions = angular.copy(position);
-  };
-
-  vm.setPositions($scope.friends);
-
+  NgMap.getMap().then(function (map) {
+    //friends = response.data;
+    friends.push(
+      {position: new google.maps.LatLng(parseFloat(-70), parseFloat(140)), name: 'Aj'},
+      {position: new google.maps.LatLng(parseFloat(-34), parseFloat(150)), name: 'Lyly'},
+      {position: new google.maps.LatLng(parseFloat(0), parseFloat(160)), name: 'Random'}
+    );
+  });
 
   var init = function () {
 
-    //var updateMyPosition = function (position) {
-    //  $scope.friends[0].position.lat = position.coords.latitude;
-    //  $scope.friends[0].position.lng = position.coords.longitude;
-    //};
-
     //update Positions
     $interval(function () {
-      for (var i = 0; i < $scope.friends.length; i++) {
+
+      //Send my location and receive other's location
+      $http({
+        method: 'GET',
+        url: 'http://localhost:3000/location',
+        params: {position: me.position, name: 'Ron'}
+      }).then(function successCallback(response) {
+        friends = response.data;
+        console.log(response.data)
         NgMap.getMap().then(function (map) {
-          //map.customMarkers.test.setPosition(friends[i].position);
+          for (var i = 0; i < friends.length; i++) {
+            for(var j = 0 ; j < markers.length; j++){
+              markers[j].setMap(null);
+              markers.splice(0, markers.length);
+            }
+            markers.push(new google.maps.Marker({
+              position: friends[i].position,
+              map: map,
+              title: friends[i].name
+            }));
+          }
         });
-      }
+      }, function errorCallback(response) {
+        console.log('ajax response failed', response);
 
-      //update my position
-      //navigator.geolocation.getCurrentPosition(updateMyPosition);
-      //$http get positions from the server
+      });
     }, 3000);
-
   };
-
 
   init();
 });
-
-
-/* Old marker adding system
- $scope.friends[i].googleMarker = new google.maps.Marker({
- title: "This is " + $scope.friends[i].name
- });
- $scope.friends[i].googleMarker.setPosition(new google.maps.LatLng($scope.friends[i].position.lat, $scope.friends[i].position.lng));
- NgMap.getMap().then(function(map) {
- $scope.friends[i].googleMarker.setMap($scope.map);
- });*/
