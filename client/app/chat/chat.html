@@ -1,18 +1,15 @@
+<!-- <div ng-controller="AuthCtrl">
+</div> -->
 <div class='container'>
     <div ng-controller='SocketCtrl'>
-        <div class='row'>
-            <div class='col-md-9'>
-
-        <textarea style='width: 500px;
-                  height: 500px;
-                  border: 3px solid #cccccc;
-                  padding: 5px;
-                  font-family: Tahoma, sans-serif;'
-                  disabled ng-model='messageLog'></textarea>
+        <div class="row">
+            <div class="col-xs-6"></div>
+            <div class="col-xs-6">
+                <span id = "giphyme"></span>
             </div>
         </div>
-
-        <div class="row" ng-repeat="message in newMessages">{{message}}</div>
+        <div class="row">
+            <div class='messageBubble' ng-repeat="message in newMessages">{{message}}</div></div>
         <div class='row'>
             &nbsp;
         </div>
@@ -20,9 +17,9 @@
             <div class='col-md-8'>
                 <form role='form' novalidate name='form'>
                     <div class='form-group'>
-                        <input type='text' style='width: 80%'
+                        <input type='text' style='width: 50%'
                                required
-                               ng-max='50'
+                               ng-max='30'
                                ng-model='message'
                                focus>
                         <button class='btn btn-sm btn-primary'
@@ -33,5 +30,5 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button>
 </div>
+

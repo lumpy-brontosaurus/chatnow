@@ -32,8 +32,6 @@ app.factory('User', ['$http', function( $http) {
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
         FB.api('/me', function (response) {
-            console.log("here");
-            console.log(JSON.stringify(response));
             username = response.name;
         });
     }
@@ -58,7 +56,7 @@ window.fbAsyncInit = function() {
   });
 
   FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'https://chat-geo.herokuapp.com/#/home';
+   window.location = 'http://localhost:3000/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
    window.location = 'https://chat-geo.herokuapp.com/';
