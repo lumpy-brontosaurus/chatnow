@@ -154,11 +154,11 @@ app.value('messageFormatter', function(date, nick, message) {
 
 
 app.config(function($stateProvider, $urlRouterProvider){
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
       .state('login', {
-        url: '/login',
+        url: '/',
         templateUrl: 'app/auth/login.html',
         controller: 'SocketCtrl'
       })
