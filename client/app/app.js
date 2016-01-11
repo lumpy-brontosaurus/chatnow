@@ -107,7 +107,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     var match = $scope.message.match('^\/nick (.*)');
 
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-      var oldNick = nickName;
+      var oldNick = username;
       nickName = match[1];
       $scope.message = '';
       $scope.messageLog = messageFormatter(new Date(),
