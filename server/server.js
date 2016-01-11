@@ -23,7 +23,7 @@ require('./sockets/base')(io);
 // require('./config/users.js');
 
 // set up our JSON API for later
-require('./config/routes')(app);
+require('./config/routes.js')(app);
 
 
 // view engine setup (for later)
