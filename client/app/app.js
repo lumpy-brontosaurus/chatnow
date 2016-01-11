@@ -5,15 +5,6 @@ var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ng
 
 function statusChangeCallback(response) {
     console.log(response);
-    // console.log(response);
-    // if (response.status === 'connected') {
-    // } else if (response.status === 'not_authorized') {
-    //   document.getElementById('status').innerHTML = 'Please log ' +
-    //     'into this app.';
-    // } else {
-    //   document.getElementById('status').innerHTML = 'Please log ' +
-    //     'into Facebook.';
-    // }
   }
 
   function checkLoginState() {
@@ -89,26 +80,14 @@ $scope.FBLogin = function(){
   $scope.FBLogout = function(){
     FB.logout(function(response) {
       console.log("You are logged out");
-      // $scope.$apply();
     });
-  }
-  // $scope.FBLogout = function(){
-  //   FB.getLoginStatus(function(response){
-  //     if(response && response.status === 'connected'){
-  //       FB.logout(function(response){
-  //         document.location.reload();
-  //         // $scope.$apply();
-  //       })
-  //     }
-  //   })
-  // }
-
+  };
 }]);
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
   $scope.nickName = nickName;
-  $scope.messageLog = 'Ready to chat!';
+  $scope.messageLog = '';
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
