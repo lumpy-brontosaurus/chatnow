@@ -98,6 +98,7 @@ $scope.FBLogin = function(){
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
   $scope.nickName = username;
   $scope.messageLog = '';
+  console.log(username);
   $scope.FBLogout = function(){
         FB.logout(function(response) {
             console.log("You are logged out");
@@ -107,7 +108,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     var match = $scope.message.match('^\/nick (.*)');
 
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-      var oldNick = username;
+      var oldNick = nickName;
       nickName = match[1];
       $scope.message = '';
       $scope.messageLog = messageFormatter(new Date(),
