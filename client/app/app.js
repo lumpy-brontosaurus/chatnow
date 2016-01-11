@@ -76,7 +76,7 @@ window.fbAsyncInit = function() {
   }(document, 'script', 'facebook-jssdk'));
 
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
-    // $scope.username = [];
+    $scope.username = [];
     $scope.FBLogin = function(){
         FB.login(function(response) {
             if (response.authResponse) {
@@ -94,7 +94,7 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 
                     User.getUser()
                          .then(function (resData){
-                             console.log(resData[1].user);
+                             // console.log(resData[1].user);
                              // username = resData[1].user;
                              console.log(resData);
                         })
