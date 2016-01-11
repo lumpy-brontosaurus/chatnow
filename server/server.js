@@ -20,10 +20,10 @@ var server = app.listen(port, function(){
 //
 io = io.listen(server);
 require('./sockets/base')(io);
-require('./config/users.js');
+// require('./config/users.js');
 
 // set up our JSON API for later
-require('./config/api')(app);
+require('./config/routes')(app);
 
 
 // view engine setup (for later)
