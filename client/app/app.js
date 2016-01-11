@@ -136,7 +136,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     }
 
     $log.debug('sending message', $scope.message);
-    chatSocket.emit('message', nickName, $scope.message);
+    chatSocket.emit('message', username, $scope.message);
     $scope.message = '';
   };
 
