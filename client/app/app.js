@@ -131,7 +131,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
       return;
     }
     $scope.$apply(function() {
-      $scope.messageLog = messageFormatter(new Date(), username, data.payload);
+      $scope.messageLog = messageFormatter(new Date(), data.source, data.payload);
         $scope.newMessages.push($scope.messageLog);
         console.log($scope.messageLog);
       });
