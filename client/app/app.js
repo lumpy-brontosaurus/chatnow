@@ -96,7 +96,7 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                          .then(function (resData){
                              // console.log(resData[1].user);
                              // username = resData[i].user;
-                             console.log(resData[0].user);
+                             console.log(resData[1].user);
                         })
                         .catch(function (error){
                             console.log(error);
@@ -150,7 +150,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
 
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), data.username, data.payload);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
