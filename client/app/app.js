@@ -96,14 +96,6 @@ $scope.FBLogin = function(){
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  if(statusChangeCallback(response).authResponse.id !== undefined){
-        FB.api('/me', function(response) {
-            console.log('Good to see you, ' + response.name + '.');
-            var accessToken = FB.getAuthResponse().accessToken;
-            console.log(accessToken);
-            username = response.name;
-        });
-    }
   $scope.nickName = nickName;
   $scope.messageLog = '';
   $scope.sendMessage = function() {
