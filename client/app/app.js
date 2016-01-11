@@ -13,6 +13,7 @@ function statusChangeCallback(response) {
      FB.api('/me', function(response) {
         console.log("here");
             console.log(JSON.stringify(response));
+            username = response.name;
 });  
    }
   }
@@ -69,7 +70,6 @@ $scope.FBLogin = function(){
      // console.log(response);
      var accessToken = FB.getAuthResponse().accessToken;
      console.log(accessToken);
-     username = response.name;
      });
      // $scope.$apply();
    } else {
