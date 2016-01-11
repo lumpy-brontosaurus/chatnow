@@ -23,7 +23,7 @@ window.fbAsyncInit = function() {
     appId      : '438180583036734',
     status     : true,
     xfbml      : true,  // parse social plugins on this page
-    version    : 'v2.2' // use version 2.2
+    version    : 'v2.2'
   });
 
   FB.getLoginStatus(function(response) {
@@ -70,21 +70,6 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
             }
         }, {scope: ''});
     };
-
-    $scope.FBFriends = function() {
-      FB.api('/me/friends?access_token=CAACEdEose0cBAL5TMM7iOge5JauOU5JlAJl6Pt1qzMlkmiwxJo9RezXcY6zWRXslYd1AWZBf43WvULwzg9WKdbGgHL8FqqvOJ8J4582s76sXcoiCT8nZATMSduEFAywHlmZAzoecHNB6b83Wh69GfA3FKDQfAZC9b0faKYLSZAQ8IH4bhetuaoqSV6uTaBZCoxsPDunmtsrAZDZD', function(response) {
-        $scope.$apply(function() {
-          $scope.myFriends = response.data;
-          console.log(response);
-        });
-      });
-    };
-
-  $scope.FBLogout = function(){
-    FB.logout(function(response) {
-      console.log("You are logged out");
-    });
-  };
 }]);
 
 app.factory('User', ['$http', function( $http) {
@@ -92,12 +77,23 @@ app.factory('User', ['$http', function( $http) {
         addUser: function (user) {
             return $http({
                 method: 'POST',
-                url: '/add',
+                url: '/api/add',
                 data: user
 
             })
                 .then(function (resp) {
                     return resp;
+                });
+        },
+
+        getUser: function(user){
+            return $http({
+                method: 'GET',
+                url: '/api/add'
+            })
+                .then(function (resp) {
+                    console.log(resp);
+                    return resp.data;
                 });
         }
     }
@@ -105,16 +101,26 @@ app.factory('User', ['$http', function( $http) {
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  $scope.nickName = username;
-  $scope.messageLog = 'Ready to chat!';
+
+    $scope.newMessages = [];
+    $scope.nickName = username;
+    $scope.messageLog = 'Ready to chat!';
+
+    $scope.FBLogout = function(){
+        FB.logout(function(response) {
+            console.log("You are logged out");
+        });
+    };
+
+
 
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
-
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
       var oldNick = nickName;
       nickName = match[1];
       $scope.message = '';
+        console.log($scope.messageLog);
       $scope.messageLog = messageFormatter(new Date(),
               nickName, 'nickname changed - from ' +
               oldNick + ' to ' + nickName + '!') + $scope.messageLog;
@@ -133,7 +139,12 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
       return;
     }
     $scope.$apply(function() {
+
+
       $scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
+        $scope.newMessages.push($scope.messageLog);
+        console.log($scope.messageLog);
+
     });
   });
 });
