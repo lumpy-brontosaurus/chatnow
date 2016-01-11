@@ -48,55 +48,34 @@ window.fbAsyncInit = function() {
 app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) {
 
  
-// $scope.FBLogin = function(){
-//   FB.login(function(response) {
-//    if (response.authResponse) {
-//      // $scope.access_token =   FB.getAuthResponse()['accessToken'];
-//      // console.log('Access Token = '+ $scope.access_token);
-//      console.log('Welcome! Fetching your information... ');
-//      FB.api('/me', function(response) {
-//      console.log('Good to see you, ' + response.name + '.');
-//      // console.log(response);
-//      var accessToken = FB.getAuthResponse().accessToken;
-//      console.log(accessToken);
-//      });
-//      // $scope.$apply();
-//    } else {
-//      console.log('User cancelled login or did not fully authorize.');
-//    }
-//  }, {scope: ''});
-// };
 $scope.FBLogin = function(){
   FB.login(function(response) {
    if (response.authResponse) {
-     var ACCESS_TOKEN = FB.getAuthResponse().accessToken;
      // $scope.access_token =   FB.getAuthResponse()['accessToken'];
      // console.log('Access Token = '+ $scope.access_token);
      console.log('Welcome! Fetching your information... ');
      FB.api('/me', function(response) {
      console.log('Good to see you, ' + response.name + '.');
-     console.log(ACCESS_TOKEN);
-     // $scope.name = response.name;
-     })
-      FB.api('/me/friends?access_token=ACCESS_TOKEN', function(response) {
-        $scope.$apply(function() {
-          $scope.myFriends = response.data;
-          console.log(response.data);
-        })
-      })
+     // console.log(response);
+     var accessToken = FB.getAuthResponse().accessToken;
+     console.log(accessToken);
+     });
+     // $scope.$apply();
    } else {
      console.log('User cancelled login or did not fully authorize.');
    }
- }, {scope: ''})};
+ }, {scope: ''});
+};
 
-    // $scope.FBFriends = function() {
-    //   FB.api('/me/friends?access_token=CAACEdEose0cBAL5TMM7iOge5JauOU5JlAJl6Pt1qzMlkmiwxJo9RezXcY6zWRXslYd1AWZBf43WvULwzg9WKdbGgHL8FqqvOJ8J4582s76sXcoiCT8nZATMSduEFAywHlmZAzoecHNB6b83Wh69GfA3FKDQfAZC9b0faKYLSZAQ8IH4bhetuaoqSV6uTaBZCoxsPDunmtsrAZDZD', function(response) {
-    //     $scope.$apply(function() {
-    //       $scope.myFriends = response.data;
-    //       console.log(response);
-    //     });
-    //   });
-    // };
+
+    $scope.FBFriends = function() {
+      FB.api('/me/friends?access_token=CAACEdEose0cBAL5TMM7iOge5JauOU5JlAJl6Pt1qzMlkmiwxJo9RezXcY6zWRXslYd1AWZBf43WvULwzg9WKdbGgHL8FqqvOJ8J4582s76sXcoiCT8nZATMSduEFAywHlmZAzoecHNB6b83Wh69GfA3FKDQfAZC9b0faKYLSZAQ8IH4bhetuaoqSV6uTaBZCoxsPDunmtsrAZDZD', function(response) {
+        $scope.$apply(function() {
+          $scope.myFriends = response.data;
+          console.log(response);
+        });
+      });
+    };
 
 
   $scope.FBLogout = function(){
