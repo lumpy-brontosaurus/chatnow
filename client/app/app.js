@@ -59,7 +59,7 @@ window.fbAsyncInit = function() {
    window.location = 'http://localhost:3000/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
-   window.location = 'https://chat-geo.herokuapp.com/';
+   window.location = 'http://localhost:3000/';
  });
 
 };
