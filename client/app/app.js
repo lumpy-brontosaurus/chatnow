@@ -102,6 +102,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
         FB.logout(function(response) {
             console.log("You are logged out");
         });
+    };
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
