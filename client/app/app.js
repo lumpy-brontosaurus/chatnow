@@ -1,6 +1,7 @@
 
 var access_token;
-var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io']);
+var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
+    .value('nickName', 'anonymous');
 
 function statusChangeCallback(response) {
     console.log(response);
