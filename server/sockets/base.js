@@ -10,7 +10,7 @@ module.exports = function (io) {
             console.log('payload is', msg);
             io.sockets.emit('broadcast', {
                 payload: msg,
-                username: from
+                source: from
             });
             console.log('broadcast complete');
         });

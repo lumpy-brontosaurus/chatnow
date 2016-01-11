@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', username);
+    .value('username', username);
 var username;
 
 app.factory('User', ['$http', function( $http) {
@@ -111,9 +111,9 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 }]);
 
 
-app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
+app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, username, $http) {
     $scope.newMessages = [];
-    $scope.nickName = username;
+    $scope.username = username;
     $scope.messageLog = 'Ready to chat!';
 
     $scope.FBLogout = function(){
@@ -125,14 +125,14 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-      var oldNick = nickName;
-      nickName = match[1];
+      var oldNick = username;
+      username = match[1];
       $scope.message = '';
         console.log($scope.messageLog);
       $scope.messageLog = messageFormatter(new Date(),
-              nickName, 'nickname changed - from ' +
-              oldNick + ' to ' + nickName + '!') + $scope.messageLog;
-      $scope.nickName = nickName;
+              username, 'username changed - from ' +
+              oldNick + ' to ' + username + '!') + $scope.messageLog;
+      $scope.username = username;
     }
 
     $log.debug('sending message', $scope.message);
@@ -150,10 +150,10 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
 
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), data.username, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
 
         $scope.newMessages.push($scope.messageLog);
-        console.log(username)
+        console.log(username);
 
     });
   });
