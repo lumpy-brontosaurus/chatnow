@@ -1,7 +1,7 @@
 
 var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', 'You');
+    .value('nickName', response.name);
 
 function statusChangeCallback(response) {
     console.log(response);
@@ -47,6 +47,7 @@ window.fbAsyncInit = function() {
 
 app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) {
 
+ 
 $scope.FBLogin = function(){
   FB.login(function(response) {
    if (response.authResponse) {
