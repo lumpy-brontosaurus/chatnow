@@ -1,8 +1,8 @@
 
-var username;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', username);
 
+var username;
 var access_token;
 
 function statusChangeCallback(response) {
@@ -96,7 +96,7 @@ $scope.FBLogin = function(){
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-  $scope.nickName = nickName;
+  $scope.nickName = username;
   $scope.messageLog = '';
   $scope.FBLogout = function(){
         FB.logout(function(response) {
