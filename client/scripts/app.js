@@ -7,4 +7,4 @@ angular
     'ngSanitize',
     'btford.socket-io'
   ])
-  .value('nickName', 'anonymous');
+  .value('nickName', username);
