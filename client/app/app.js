@@ -1,12 +1,37 @@
-var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('nickName', 'anonymous');
-var username = '';
+var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
+    .value('nickName', username);
+var username;
+
+app.factory('User', ['$http', function( $http) {
+    return {
+        addUser: function (user) {
+            console.log(user);
+            return $http({
+                method: 'POST',
+                url: '/api/add',
+                data:user
+            })
+                .then(function (resp) {
+                    return resp;
+                });
+        },
+
+        getUser: function(){
+            return $http({
+                method: 'GET',
+                url: '/api/add'
+            })
+                .then(function (resp) {
+                    console.log(resp);
+                    return resp.data;
+                });
+        }
+    }
+}]);
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
-        FB.api('/me', function(response) {
-            console.log("here");
-            console.log(JSON.stringify(response));
+        FB.api('/me', function (response) {
             username = response.name;
         });
     }
@@ -36,7 +61,6 @@ window.fbAsyncInit = function () {
   FB.Event.subscribe('auth.logout', function (resp) {
     window.location = 'https://chat-geo.herokuapp.com/';
   });
-
 };
 // Load the SDK asynchronously
 (function (d, s, id) {
@@ -51,6 +75,7 @@ window.fbAsyncInit = function () {
 }(document, 'script', 'facebook-jssdk'));
 
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
+    $scope.username = [];
     $scope.FBLogin = function(){
         FB.login(function(response) {
             if (response.authResponse) {
@@ -59,11 +84,21 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                     console.log('Good to see you, ' + response.name + '.');
                     var accessToken = FB.getAuthResponse().accessToken;
                     console.log(accessToken);
-                    username = response.name;
-                    User.addUser(username)
+                    $scope.username.push({user:response.name});
+                    console.log($scope.username);
+                    User.addUser($scope.username)
                         .catch(function (error) {
                             console.log(error);
+                        });
+
+                    User.getUser()
+                         .then(function (resData){
+                             console.log(resData[1].user);
+                             username = resData[1].user;
                         })
+                        .catch(function (error){
+                            console.log(error);
+                        });
                 });
      // $scope.$apply();
             } else {
@@ -73,36 +108,8 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
     };
 }]);
 
-app.factory('User', ['$http', function( $http) {
-    return {
-        addUser: function (user) {
-            return $http({
-                method: 'POST',
-                url: '/api/add',
-                data: user
 
-            })
-                .then(function (resp) {
-                    return resp;
-                });
-        },
-
-        getUser: function(user){
-            return $http({
-                method: 'GET',
-                url: '/api/add'
-            })
-                .then(function (resp) {
-                    console.log(resp);
-                    return resp.data;
-                });
-        }
-    }
-}]);
-
-
-app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
-
+app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
     $scope.newMessages = [];
     $scope.nickName = username;
     $scope.messageLog = 'Ready to chat!';
@@ -114,7 +121,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     };
 
 
-  $scope.sendMessage = function() {
+    $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
       var oldNick = nickName;
@@ -140,9 +147,12 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     }
 
     $scope.$apply(function() {
-      $scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
+      //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
+
         $scope.newMessages.push($scope.messageLog);
-        console.log($scope.messageLog);
+        console.log(username)
+
     });
   });
 });

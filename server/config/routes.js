@@ -18,6 +18,8 @@ module.exports = function(app){
 
     app.get('/api/add', function(req, res){
         res.json(posObj);
+        console.log(posObj);
+
     });
 
     app.get('/location', function(req, res) {
