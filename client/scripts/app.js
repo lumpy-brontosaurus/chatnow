@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('chatApp', [
+  .module('geoChat', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
