@@ -98,6 +98,7 @@ $scope.FBLogin = function(){
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, username) {
   $scope.username = username;
   $scope.messageLog = '';
+  console.log(username);
   $scope.FBLogout = function(){
         FB.logout(function(response) {
             console.log("You are logged out");
