@@ -1,10 +1,10 @@
 <div ng-controller="AuthCtrl">
     <div class = 'container'>
-      <!--   <div id="fbButton">
-            <button class="btn btn-primary" ng-click="FBLogin()">Login With Facebook</button>
-            <!-<h1>{{name}}</h1> -->
-       <!--  </div> --> 
+​
         <form class="login-form" name="signinForm" ng-submit='FBLogin()'>
+​
+            <button class="btn btn-lg btn-primary btn-block" id = "facebook" ng-click="FBLogin()">Login With Facebook</button>
+            <br>
             <a ui-sref="#">Don't have a Facebook account? <strong>Signin Below</strong></a>
             <label for = "inputUsername" class = 'sr-only'>Username</label>
             <input type = "text" id = "inputUsername" class = "form-control" placeholder="Username" required autofocus ng-model='user.username'>
@@ -13,23 +13,9 @@
             <input type= "password" id="inputPassword" class = "form-control" placeholder="Password" ng-model='user.password' required>
             <br>
             <button class = 'btn btn-lg btn-primary btn-block'>Sign In</button>
-
+​
         </form>
         <br>
-        <div id="status"></div>
-
-
     </div>
-    <button class="btn btn-primary" ng-click="FBLogin()">FB Login</button>
-<button class="btn btn-primary" ng-click="FBFriends()">FB Friends</button>
-     <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button>
-
-<div>{{myFriends}}</div>
-
-
 </div>
 </div>
-
-
-
-

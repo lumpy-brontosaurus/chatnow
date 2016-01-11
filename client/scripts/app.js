@@ -1,10 +1,10 @@
 'use strict';
 
 angular
-  .module('chatApp', [
+  .module('geoChat', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
     'btford.socket-io'
   ])
-  .value('nickName', 'anonymous');
+  .value('nickName', username);

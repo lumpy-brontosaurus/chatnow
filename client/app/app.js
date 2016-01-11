@@ -1,19 +1,19 @@
 
-var access_token;
+var username;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', 'anonymous');
+    .value('nickName', username);
+
+var access_token;
 
 function statusChangeCallback(response) {
-    console.log(response);
-    // console.log(response);
-    // if (response.status === 'connected') {
-    // } else if (response.status === 'not_authorized') {
-    //   document.getElementById('status').innerHTML = 'Please log ' +
-    //     'into this app.';
-    // } else {
-    //   document.getElementById('status').innerHTML = 'Please log ' +
-    //     'into Facebook.';
-    // }
+    if (response.status === 'connected') {
+    FB.api('/me', function(response) {
+        console.log("here");
+            console.log(JSON.stringify(response));
+            username = response.name;
+            console.log(username);
+    });
+   }
   }
 
   function checkLoginState() {
@@ -35,10 +35,10 @@ window.fbAsyncInit = function() {
   });
 
   FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'http://www.localhost:3000/#/home';
+   window.location = 'https://chat-geo.herokuapp.com/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
-   window.location = 'http://www.localhost:3000/';
+   window.location = 'https://chat-geo.herokuapp.com/';
  });
 
 };
@@ -56,6 +56,7 @@ window.fbAsyncInit = function() {
 
 app.controller('AuthCtrl', ["$scope", "$location", function ($scope, $location) {
 
+ 
 $scope.FBLogin = function(){
   FB.login(function(response) {
    if (response.authResponse) {
@@ -88,29 +89,15 @@ $scope.FBLogin = function(){
 
   $scope.FBLogout = function(){
     FB.logout(function(response) {
-      $scope.access_token =   FB.getAuthResponse()['accessToken'];
-      FB.Auth.setAuthResponse(null, 'unknown');
       console.log("You are logged out");
-      // $scope.$apply();
     });
-  }
-  // $scope.FBLogout = function(){
-  //   FB.getLoginStatus(function(response){
-  //     if(response && response.status === 'connected'){
-  //       FB.logout(function(response){
-  //         document.location.reload();
-  //         // $scope.$apply();
-  //       })
-  //     }
-  //   })
-  // }
-
+  };
 }]);
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
   $scope.nickName = nickName;
-  $scope.messageLog = 'Ready to chat!';
+  $scope.messageLog = '';
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
@@ -156,11 +143,11 @@ app.value('messageFormatter', function(date, nick, message) {
 
 
 app.config(function($stateProvider, $urlRouterProvider){
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
       .state('login', {
-        url: '/login',
+        url: '/',
         templateUrl: 'app/auth/login.html',
         controller: 'SocketCtrl'
       })
