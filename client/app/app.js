@@ -6,8 +6,8 @@ var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ng
 var username = '';
 
 function statusChangeCallback(response) {
-    console.log(response);
-    console.log(username);
+    console.log(response.data);
+    // console.log(username);
   }
 
   function checkLoginState() {
