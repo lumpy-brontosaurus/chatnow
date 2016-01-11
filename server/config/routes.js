@@ -9,14 +9,16 @@ module.exports = function(app){
     var user = '';
 
     app.post('/api/add', function(req, res){
-        console.log('POST');
-        user = req.body;
+        console.log(req.body[0].user);
+        user = req.body[0].user;
         posObj.push({user: user});
         res.send(204,'Posted');
     });
 
     app.get('/api/add', function(req, res){
         res.json(posObj);
+        console.log(posObj);
+
     });
 
     app.get('/position', function(req, res){
