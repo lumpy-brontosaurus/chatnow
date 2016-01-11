@@ -5,19 +5,19 @@ var path = require('path');
 var url = require('url');
 
 module.exports = function(app){
-
-    var posObj = [];
+    var posObj = [{user:'', position:''}];
+    var user = '';
 
     app.post('/home/add', function(req, res){
-
         console.log('POST');
-
+        user = req.body;
+        posObj.push({user: user})
     });
 
     app.get('/position', function(req, res){
         var newPos = req.query;
         for (var i in newPos){
-            posObj.push({position: i});
+            posObj.push({user: user, position: i});
         }
         res.json(posObj);
     });

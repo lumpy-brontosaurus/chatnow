@@ -1,5 +1,3 @@
-
-var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', 'anonymous');
 var username = '';
@@ -33,10 +31,10 @@ window.fbAsyncInit = function() {
   });
 
   FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'http://www.localhost:3000/#/home';
+   window.location = 'https://chat-geo.herokuapp.com/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
-   window.location = 'http://www.localhost:3000/';
+   window.location = 'https://chat-geo.herokuapp.com/';
  });
 
 };
@@ -50,7 +48,6 @@ window.fbAsyncInit = function() {
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-
 
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
     $scope.FBLogin = function(){
@@ -85,23 +82,18 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 
   $scope.FBLogout = function(){
     FB.logout(function(response) {
-      $scope.access_token =   FB.getAuthResponse()['accessToken'];
-      FB.Auth.setAuthResponse(null, 'unknown');
       console.log("You are logged out");
-      // $scope.$apply();
     });
   };
-
 }]);
 
 app.factory('User', ['$http', function( $http) {
     return {
-        addUser: function (item) {
+        addUser: function (user) {
             return $http({
                 method: 'POST',
                 url: '/home/add',
-                headers: {Authorization: 'Bearer ' + Auth.getToken()},
-                data: item
+                data: user
 
             })
                 .then(function (resp) {
@@ -123,6 +115,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     //}
   $scope.nickName = username;
   $scope.messageLog = 'Ready to chat!';
+
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
@@ -168,11 +161,11 @@ app.value('messageFormatter', function(date, nick, message) {
 
 
 app.config(function($stateProvider, $urlRouterProvider){
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/');
 
   $stateProvider
       .state('login', {
-        url: '/login',
+        url: '/',
         templateUrl: 'app/auth/login.html',
         controller: 'SocketCtrl'
       });
