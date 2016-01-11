@@ -1,16 +1,16 @@
 
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', username[0]);
+    .value('nickName', username);
 
 var access_token;
-var username = [];
+var username;
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
     FB.api('/me', function(response) {
         console.log("here");
             console.log(JSON.stringify(response));
-            username.push(response.name);
+            username = response.name;
             console.log(username);
     });
    }
