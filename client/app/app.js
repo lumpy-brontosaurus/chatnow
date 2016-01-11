@@ -96,13 +96,16 @@ $scope.FBLogin = function(){
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName) {
+  $scope.newMessages = [];
   $scope.nickName = nickName;
   $scope.messageLog = '';
+
   $scope.FBLogout = function(){
         FB.logout(function(response) {
             console.log("You are logged out");
         });
     };
+
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
@@ -128,10 +131,12 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
       return;
     }
     $scope.$apply(function() {
-      $scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-    });
+      $scope.messageLog = messageFormatter(new Date(), data.source, data.payload);
+        $scope.newMessages.push($scope.messageLog);
+        console.log($scope.messageLog);
+      });
   });
-})
+});
 
 app.factory('chatSocket', function (socketFactory) {
   var socket = socketFactory();

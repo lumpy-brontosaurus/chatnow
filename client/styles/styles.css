@@ -1,3 +1,43 @@
+.messageBubble{
+position: relative;
+width: 325px;
+height: 65px;
+padding: 10px;
+margin: 15px;
+background: #E6FFFF;
+-webkit-border-radius: 16px;
+-moz-border-radius: 16px;
+border-radius: 16px;
+border: #EAFEFA solid 5px;
+}
+​
+.messageBubble:after{
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 12px 10px 12px 0;
+border-color: transparent #E6FFFF;
+display: block;
+width: 0;
+z-index: 1;
+margin-top: -12px;
+left: -10px;
+top: 37%;
+}
+​
+.messageBubble:before{
+content: '';
+position: absolute;
+border-style: solid;
+border-width: 16px 14px 16px 0;
+border-color: transparent #EAFEFA;
+display: block;
+width: 0;
+z-index: 0;
+margin-top: -16px;
+left: -19px;
+top: 37%;
+}
 
 #user{
     text-transform: uppercase;

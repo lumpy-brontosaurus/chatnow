@@ -1,18 +1,9 @@
 <!-- <div ng-controller="AuthCtrl">
-     <button class="btn btn-primary" ng-click="FBLogout()">FB Logout</button>
 </div> -->
 <div class='container'>
     <div ng-controller='SocketCtrl'>
-        <div class='row'>
-            <div class='col-md-9'>
-        <textarea style='width: 500px;
-                  height: 500px;
-                  border: 3px solid #cccccc;
-                  padding: 5px;
-                  font-family: Tahoma, sans-serif;'
-                  disabled ng-model='messageLog'></textarea>
-            </div>
-        </div>
+        <div class="row">
+        <div class='messageBubble' ng-repeat="message in newMessages">{{message}}</div></div>
         <div class='row'>
             &nbsp;
         </div>
@@ -22,7 +13,7 @@
                     <div class='form-group'>
                         <input type='text' style='width: 80%'
                                required
-                               ng-max='50'
+                               ng-max='30'
                                ng-model='message'
                                focus>
                         <button class='btn btn-sm btn-primary'
