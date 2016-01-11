@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 //app.use(require('stylus').middleware(path.join(__dirname, 'public')));
-
+require('./config/routes.js');
 // for dev
 app.use(express.static(__dirname +'/../client'));
 
