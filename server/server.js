@@ -20,7 +20,7 @@ var server = app.listen(port, function(){
 //
 io = io.listen(server);
 require('./sockets/base')(io);
-require('./config/users.js');
+require('./config/user.js');
 ​
 // set up our JSON API for later
 require('./config/api')(app);
@@ -32,7 +32,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-require('./config/routes.js')(app);
+// require('./config/routes.js')(app);
 ​
 // for dev
 app.use(express.static(__dirname +'/../client'));
