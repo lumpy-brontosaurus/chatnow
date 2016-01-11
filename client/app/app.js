@@ -1,7 +1,7 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
     .value('nickName', username);
 var username;
-​
+
 app.factory('User', ['$http', function( $http) {
     return {
         addUser: function (user) {
@@ -15,7 +15,7 @@ app.factory('User', ['$http', function( $http) {
                     return resp;
                 });
         },
-​
+
         getUser: function(){
             return $http({
                 method: 'GET',
@@ -28,23 +28,21 @@ app.factory('User', ['$http', function( $http) {
         }
     }
 }]);
-​
+
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
         FB.api('/me', function (response) {
-            console.log("here");
-            console.log(JSON.stringify(response));
             username = response.name;
         });
     }
 }
-​
+
 function checkLoginState() {
     FB.getLoginStatus(function(response) {
       statusChangeCallback(response);
     });
   }
-​
+
 window.fbAsyncInit = function() {
   FB.init({
     appId      : '438180583036734',
@@ -52,18 +50,18 @@ window.fbAsyncInit = function() {
     xfbml      : true,  // parse social plugins on this page
     version    : 'v2.2'
   });
-​
+
   FB.getLoginStatus(function(response) {
     statusChangeCallback(response);
   });
-​
+
   FB.Event.subscribe('auth.login', function(resp) {
-   window.location = 'localhost:3000/#/home';
+   window.location = 'http://localhost:3000/#/home';
  });
     FB.Event.subscribe('auth.logout', function(resp) {
-   window.location = 'https://chat-geo.herokuapp.com/';
+   window.location = 'http://localhost:3000/';
  });
-​
+
 };
   // Load the SDK asynchronously
   (function(d, s, id) {
@@ -75,7 +73,7 @@ window.fbAsyncInit = function() {
     js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
-​
+
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
     $scope.username = [];
     $scope.FBLogin = function(){
@@ -92,7 +90,7 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                         .catch(function (error) {
                             console.log(error);
                         });
-​
+
                     User.getUser()
                          .then(function (resData){
                              console.log(resData[1].user);
@@ -109,19 +107,19 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
         }, {scope: ''});
     };
 }]);
-​
-​
+
+
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
     $scope.newMessages = [];
     $scope.nickName = username;
     $scope.messageLog = 'Ready to chat!';
-​
+
     $scope.FBLogout = function(){
         FB.logout(function(response) {
             console.log("You are logged out");
         });
     };
-​
+
     $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
     if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
@@ -134,12 +132,12 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
               oldNick + ' to ' + nickName + '!') + $scope.messageLog;
       $scope.nickName = nickName;
     }
-​
+
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
     $scope.message = '';
   };
-​
+
   $scope.$on('socket:broadcast', function(event, data) {
     $log.debug('got a message', event.name);
     if (!data.payload) {
@@ -147,42 +145,42 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
       return;
     }
     $scope.$apply(function() {
-​
-​
+
+
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
         $scope.messageLog = messageFormatter(new Date(), username, data.payload);
-​
+
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
-​
+
     });
   });
 });
-​
+
 app.factory('chatSocket', function (socketFactory) {
   var socket = socketFactory();
   socket.forward('broadcast');
   return socket;
 });
-​
+
 app.value('messageFormatter', function(date, nick, message) {
   return date.toLocaleTimeString() + ' - ' +
       nick + ' - ' +
       message + '\n';
-​
+
 });
-​
-​
+
+
 app.config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('/');
-​
+
   $stateProvider
       .state('login', {
         url: '/',
         templateUrl: 'app/auth/login.html',
         controller: 'SocketCtrl'
       });
-​
+
   $stateProvider
     .state('home', {
       url: '/home',
