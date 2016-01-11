@@ -3,7 +3,7 @@ var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ng
     .value('nickName', username);
 
 var access_token;
-var username = '';
+var username;
 
 function statusChangeCallback(response) {
     if (response.status === 'connected') {
