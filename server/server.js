@@ -20,19 +20,22 @@ var server = app.listen(port, function(){
 //
 io = io.listen(server);
 require('./sockets/base')(io);
-require('./config/user.js');
+require('./config/users.js');
 ​
 // set up our JSON API for later
 require('./config/api')(app);
 ​
-app.set('view engine', 'ejs');
+​
+// view engine setup (for later)
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 ​
 // middleware settings
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-// require('./config/routes.js')(app);
+//app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 ​
 // for dev
 app.use(express.static(__dirname +'/../client'));
@@ -45,6 +48,30 @@ app.use(function (req, res, next) {
   next(err);
 });
 ​
+/// error handlers
 ​
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+​
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+​
+app.get('/home', function(req, res){
+  console.log('Hello');
+});
 ​
 module.exports = app;
