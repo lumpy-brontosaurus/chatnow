@@ -3,7 +3,7 @@
 angular.module('chatApp')
   .value('messageFormatter', function(date, nick, message) {
     return date.toLocaleTimeString() + ' - ' + 
-           nick + ' - ' + 
+           nick + ' : ' + 
            message + '\n';
     
   });

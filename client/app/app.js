@@ -1,7 +1,7 @@
 
 var access_token;
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
-    .value('nickName', 'FBFriends()');
+    .value('nickName', 'You');
 
 function statusChangeCallback(response) {
     console.log(response);
