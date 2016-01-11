@@ -1,6 +1,3 @@
-/**
- * Created by hridhya on 1/7/16.
- */
 module.exports = function (io) {
     'use strict';
     io.on('connection', function (socket) {
