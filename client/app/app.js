@@ -104,7 +104,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
             username = response.name;
         });
     }
-  $scope.nickName = username;
+  $scope.nickName = nickName;
   $scope.messageLog = '';
   $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
