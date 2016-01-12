@@ -125,20 +125,21 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
     $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
-    if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-      var oldNick = nickName;
-      nickName = match[1];
-      $scope.message = '';
-        console.log($scope.messageLog);
-      $scope.messageLog = messageFormatter(new Date(),
-          nickName, 'nickname changed - from ' +
-          oldNick + ' to ' + nickName + '!') + $scope.messageLog;
-      $scope.nickName = nickName;
-    }
+    // if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
+    //   var oldNick = nickName;
+    //   nickName = match[1];
+    //   $scope.message = '';
+    //     console.log($scope.messageLog);
+    //   $scope.messageLog = messageFormatter(new Date(),
+    //       nickName, 'nickname changed - from ' +
+    //       oldNick + ' to ' + nickName + '!') + $scope.messageLog;
+    //   $scope.nickName = nickName;
+    // }
 
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
     $scope.message = '';
+    console.log(username);
   };
 
   $scope.$on('socket:broadcast', function (event, data) {
