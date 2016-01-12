@@ -114,7 +114,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
 
     $scope.sendMessage = function() {
-    var match = $scope.message.match('^\/nick (.*)');
+    // var match = $scope.message.match('^\/nick (.*)');
 
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
