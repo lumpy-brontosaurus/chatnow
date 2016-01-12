@@ -5,7 +5,8 @@ var path = require('path');
 var url = require('url');
 
 module.exports = function(app){
-    var posObj = [{user:'', position:{}}];
+    //{user:'', position:{}}
+    var posObj = [];
     var user = '';
 
     app.post('/api/add', function(req, res){
@@ -21,13 +22,25 @@ module.exports = function(app){
 
     });
 
-    app.get('/position', function(req, res){
-        var newPos = req.query;
-        for (var i in newPos){
-            console.log(i);
-            posObj.push({user: user, position: i});
+    app.get('/location', function(req, res) {
+      console.log('posObj.length= ', posObj.length);
+      var newPos = req.query;
+      var position = JSON.parse(req.query.position);
+
+      var userExists = false;
+
+      for (var i = 0; i < posObj.length; i++) {
+        console.log(posObj.length, position, posObj[i].user);
+        if (req.query.name === posObj[i].user) {
+          console.log('match');
+          userExists = true;
+          posObj[i].position = position;
         }
-        res.json(posObj);
+      }
+      if (!userExists) {
+        posObj.push({user: req.query.name, position: position});
+      }
+      res.json(posObj);
     });
 
 };
