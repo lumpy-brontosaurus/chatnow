@@ -152,7 +152,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
     $scope.$apply(function() {
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), data.payload);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
@@ -205,11 +205,18 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
         url: 'https://chat-geo.herokuapp.com/location',
         params: {position: me.position, name: username}
       }).then(function successCallback(response) {
-         friends = [{ position: {lat: 30.783775, lng: -128.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy'},
+         friends = [];
+         var fakeFriends = [{ position: {lat: 30.783775, lng: -128.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy'},
     { position: {lat: 33.783775, lng: -120.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy2'},
     { position: {lat: 41.783775, lng: -126.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy3'}
   ];
         friends = response.data;
+
+
+        for (var i = 0; i < fakeFriends.length; i++) {
+          friends.push(fakeFriends[i]);
+        };
+
         NgMap.getMap().then(function (map) {
 
           //delete old markerss
