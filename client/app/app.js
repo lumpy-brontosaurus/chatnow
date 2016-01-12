@@ -177,7 +177,7 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
       me.marker = new google.maps.Marker({
         position: me.position,
         map: map,
-        title: 'Ron'
+        title: username
       })
       map.panTo(me.position);
     });
