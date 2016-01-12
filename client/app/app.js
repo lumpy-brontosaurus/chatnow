@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('nickName', username);
+    .value('nickName', "");
 var username;
 
 app.factory('User', ['$http', function( $http) {
