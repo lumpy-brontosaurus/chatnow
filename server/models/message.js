@@ -1,6 +1,3 @@
-/**
- * Created by hridhya on 1/10/16.
- */
 var express = require('express');
 var mongoose = require('mongoose');
 var db = mongoose.connect(process.env.MONGOLAB_URI, function (error) {
