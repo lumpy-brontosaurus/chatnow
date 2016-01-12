@@ -7,6 +7,10 @@
     margin: 0 auto;
 }
 
+.form-group{
+    overflow-y: scroll;
+}
+
 #map {
     height: 400px;
     width: 500px;
