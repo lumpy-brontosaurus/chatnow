@@ -1,4 +1,4 @@
-var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io'])
+var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
     .value('nickName', username);
 var username;
 
