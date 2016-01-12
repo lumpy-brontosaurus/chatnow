@@ -7,6 +7,11 @@
     margin: 0 auto;
 }
 
+#map {
+    height: 300px;
+    width: 400px;
+}
+
 #inputUsername{
     margin-bottom: -1px;
     border-bottom-right-radius: 0;
