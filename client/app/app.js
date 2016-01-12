@@ -82,6 +82,7 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                 console.log('Welcome! Fetching your information... ');
                 FB.api('/me', function(response) {
                     console.log('Good to see you, ' + response.name + '.');
+                    username = response.name;
                     var accessToken = FB.getAuthResponse().accessToken;
                     console.log(accessToken);
                     $scope.username.push({user:response.name});
@@ -110,6 +111,10 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
+    $interval(function () {
+       console.log('userName: ',username);
+   }, 1000);
+    
     $scope.newMessages = [];
     $scope.nickName = username;
     $scope.messageLog = 'Ready to chat!';
