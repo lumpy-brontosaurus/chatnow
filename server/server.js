@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 3000;
 
 var app = express();
-//
-app.use(express.static(__dirname +'/../client'));
+
+// app.use(express.static(__dirname +'/../client'));
 app.use(express.static(__dirname +'/../node_modules'));
 
 
@@ -19,13 +19,9 @@ var server = app.listen(port, function(){
   var port = server.address().port;
   console.log("server running on port: ", port);
 });
-//
+
 io = io.listen(server);
 require('./sockets/base')(io);
-//require('./config/users.js');
-
-// set up our JSON API for later
-//require('./config/api')(app);
 
 app.set('view engine', 'ejs');
 
