@@ -10,6 +10,7 @@
 #map {
     height: 300px;
     width: 400px;
+    float: right;
 }
 
 #inputUsername{
