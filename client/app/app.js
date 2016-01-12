@@ -210,6 +210,7 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
           //add new markers
           console.log(friends.length);
           for (var i = 0; i < friends.length; i++) {
+            console.log(friends[i].position);
             markers.push(new google.maps.Marker({
               position: friends[i].position,
               map: map,
