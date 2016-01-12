@@ -178,6 +178,7 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
         map: map,
         title: 'Ron'
       })
+      map.panTo(me.position);
     });
   };
   navigator.geolocation.getCurrentPosition(updateMyPosition);
