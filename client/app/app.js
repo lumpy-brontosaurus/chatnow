@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('username', username);
+    .value('nickName', username);
 var username;
 
 app.factory('User', ['$http', function( $http) {
@@ -98,10 +98,10 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 }]);
 
 
-app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, username, $http) {
+app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
     
   $scope.newMessages = [];
-  $scope.username = username;
+  $scope.nickName = username;
   $scope.messageLog = '';
 
   $scope.FBLogout = function(){
@@ -115,22 +115,25 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     var match = $scope.message.match('^\/nick (.*)');
 
     $log.debug('sending message', $scope.message);
-    chatSocket.emit('message', username, $scope.message);
+    chatSocket.emit('message', nickName, $scope.message);
     $scope.message = '';
     // console.log(username);
   };
 
   $scope.$on('socket:broadcast', function (event, data) {
     $log.debug('got a message', data);
+      console.log("this is sending " + data.source);
     if (!data.messageLoad) {
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
       return;
     }
 
     $scope.$apply(function() {
-      $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
+        $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
 
-      $scope.newMessages.push($scope.messageLog);
+        $scope.newMessages.push($scope.messageLog);
+        // console.log(username)
+
     });
   });
 });
