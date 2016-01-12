@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('nickName', username);
+    .value('username', username);
 var username;
 
 app.factory('User', ['$http', function( $http) {
@@ -73,67 +73,64 @@ window.fbAsyncInit = function () {
 }(document, 'script', 'facebook-jssdk'));
 
 app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
-    $scope.username = [];
-    $scope.FBLogin = function(){
-        FB.login(function(response) {
-            if (response.authResponse) {
-                console.log('Welcome! Fetching your information... ');
-                FB.api('/me', function(response) {
-                    console.log('Good to see you, ' + response.name + '.');
-                    username = response.name;
-                    var accessToken = FB.getAuthResponse().accessToken;
-                    console.log(accessToken);
-                    $scope.username.push({user:response.name});
-                    console.log($scope.username);
-                    User.addUser($scope.username)
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                });
-            } else {
-                console.log('User cancelled login or did not fully authorize.');
-            }
-        }, {scope: ''});
-    };
+  $scope.username = [];
+  $scope.FBLogin = function(){
+    FB.login(function(response) {
+      if (response.authResponse) {
+        console.log('Welcome! Fetching your information... ');
+        FB.api('/me', function(response) {
+          console.log('Good to see you, ' + response.name + '.');
+          username = response.name;
+          var accessToken = FB.getAuthResponse().accessToken;
+          console.log(accessToken);
+          $scope.username.push({user:response.name});
+          console.log($scope.username);
+          User.addUser($scope.username)
+          .catch(function (error) {
+            console.log(error);
+          });
+        });
+      } else {
+      console.log('User cancelled login or did not fully authorize.');
+      }
+    }, {scope: ''});
+  };
 }]);
 
 
-app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
+app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, username, $http) {
     
-    $scope.newMessages = [];
-    $scope.nickName = username;
-    $scope.messageLog = '';
+  $scope.newMessages = [];
+  $scope.username = username;
+  $scope.messageLog = '';
 
-    $scope.FBLogout = function(){
-        FB.logout(function(response) {
-            console.log("You are logged out");
-        });
-    };
+  $scope.FBLogout = function(){
+    FB.logout(function(response) {
+      console.log("You are logged out");
+    });
+  };
 
 
     $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
 
     $log.debug('sending message', $scope.message);
-    chatSocket.emit('message', nickName, $scope.message);
+    chatSocket.emit('message', username, $scope.message);
     $scope.message = '';
     // console.log(username);
   };
 
   $scope.$on('socket:broadcast', function (event, data) {
     $log.debug('got a message', data);
-      console.log("this is sending " + data.source);
     if (!data.messageLoad) {
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
       return;
     }
 
     $scope.$apply(function() {
-        $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
+      $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
 
-        $scope.newMessages.push($scope.messageLog);
-        // console.log(username)
-
+      $scope.newMessages.push($scope.messageLog);
     });
   });
 });
