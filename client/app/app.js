@@ -91,15 +91,6 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                         .catch(function (error) {
                             console.log(error);
                         });
-
-                    // User.getUser()
-                    //      .then(function (resData){
-                    //          console.log(resData[1].user);
-                    //          //username = resData[1].user;
-                    //     })
-                    //     .catch(function (error){
-                    //         console.log(error);
-                    //     });
                 });
             } else {
                 console.log('User cancelled login or did not fully authorize.');
@@ -140,8 +131,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     }
 
     $scope.$apply(function() {
-      //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), data.source, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
