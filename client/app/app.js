@@ -256,7 +256,7 @@ app.config(function ($stateProvider, $urlRouterProvider) {
       url: '/home',
       templateUrl: 'app/chat/chat.html',
       controller: 'SocketCtrl'
-    }).state('map', {
+    }).state('home.map', {
     url: '/map',
     templateUrl: 'app/map/map.html',
     controller: 'mapController'
