@@ -145,13 +145,13 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     $log.debug('got a message', event.name);
     if (!data.payload) {
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
-      console.log(data)
+      console.log("this is sending " + data)
       return;
     }
 
     $scope.$apply(function() {
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), data.source, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
