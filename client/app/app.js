@@ -114,7 +114,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
 
     $scope.sendMessage = function() {
-    // var match = $scope.message.match('^\/nick (.*)');
+    var match = $scope.message.match('^\/nick (.*)');
 
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
@@ -125,13 +125,13 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
   $scope.$on('socket:broadcast', function (event, data) {
     $log.debug('got a message', data);
       console.log("this is sending " + data.source);
-    if (!data.payload) {
+    if (!data.messageLoad) {
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
       return;
     }
 
     $scope.$apply(function() {
-        $scope.messageLog = messageFormatter(new Date(), username, data.payload);
+        $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
@@ -196,7 +196,7 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
           markers.splice(0, markers.length);
 
           //add new markers
-          console.log(friends.length);
+          // console.log(friends.length);
           for (var i = 0; i < friends.length; i++) {
             console.log(friends[i].position);
             markers.push(new google.maps.Marker({
