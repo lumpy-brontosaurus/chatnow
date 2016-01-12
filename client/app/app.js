@@ -3,45 +3,43 @@ var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ng
 var username;
 
 app.factory('User', ['$http', function( $http) {
-    return {
-        addUser: function (user) {
-            console.log(user);
-            return $http({
-                method: 'POST',
-                url: '/api/add',
-                data:user
-            })
-                .then(function (resp) {
-                    return resp;
-                });
-        },
-
-        getUser: function(){
-            return $http({
-                method: 'GET',
-                url: '/api/add'
-            })
-                .then(function (resp) {
-                    console.log(resp);
-                    return resp.data;
-                });
-        }
+  return {
+    addUser: function (user) {
+      // console.log(user);
+      return $http({
+        method: 'POST',
+        url: '/api/add',
+        data:user
+      })
+        .then(function (resp) {
+          return resp;
+      });
+    },
+    getUser: function(){
+      return $http({
+        method: 'GET',
+        url: '/api/add'
+      })
+        .then(function (resp) {
+          return resp.data;
+      });
     }
+  };
 }]);
 
 function statusChangeCallback(response) {
-    if (response.status === 'connected') {
-        FB.api('/me', function (response) {
-            username = response.name;
-        });
-    }
+  if (response.status === 'connected') {
+    FB.api('/me', function (response) {
+      username = response.name;
+    });
+  }
 }
 
 function checkLoginState() {
-    FB.getLoginStatus(function(response) {
-      statusChangeCallback(response);
-    });
-  }
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+}
 
 window.fbAsyncInit = function () {
   FB.init({
@@ -119,7 +117,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
     $scope.message = '';
-    console.log(username);
+    // console.log(username);
   };
 
   $scope.$on('socket:broadcast', function (event, data) {
@@ -134,7 +132,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
         $scope.messageLog = messageFormatter(new Date(), username, data.messageLoad);
 
         $scope.newMessages.push($scope.messageLog);
-        console.log(username)
+        // console.log(username)
 
     });
   });
