@@ -165,7 +165,10 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 //map
 app.controller('mapController', function ($scope, $interval, $http, NgMap) {
 
-  var friends = [];
+  var friends = [{ position: {lat: 30.783775, lng: -128.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy'},
+    { position: {lat: 33.783775, lng: -120.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy2'},
+    { position: {lat: 41.783775, lng: -126.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy3'}
+  ];
   var markers = [];
   var me = { position: { }, marker : new google.maps.Marker() };
 
