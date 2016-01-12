@@ -1,6 +1,3 @@
-/**
- * Created by hridhya on 1/10/16.
- */
 var path = require('path');
 var url = require('url');
 
