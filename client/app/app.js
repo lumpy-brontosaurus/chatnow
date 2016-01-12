@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('nickName', " ");
+    .value('nickName', username);
 var username;
 
 app.factory('User', ['$http', function( $http) {
@@ -92,16 +92,15 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
                             console.log(error);
                         });
 
-                    User.getUser()
-                         .then(function (resData){
-                             console.log(resData[1].user);
-                             //username = resData[1].user;
-                        })
-                        .catch(function (error){
-                            console.log(error);
-                        });
+                    // User.getUser()
+                    //      .then(function (resData){
+                    //          console.log(resData[1].user);
+                    //          //username = resData[1].user;
+                    //     })
+                    //     .catch(function (error){
+                    //         console.log(error);
+                    //     });
                 });
-     // $scope.$apply();
             } else {
                 console.log('User cancelled login or did not fully authorize.');
             }
@@ -114,7 +113,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
     
     $scope.newMessages = [];
     $scope.nickName = username;
-    $scope.messageLog = 'Ready to chat!';
+    $scope.messageLog = '';
 
     $scope.FBLogout = function(){
         FB.logout(function(response) {
@@ -125,16 +124,6 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
     $scope.sendMessage = function() {
     var match = $scope.message.match('^\/nick (.*)');
-    // if (angular.isDefined(match) && angular.isArray(match) && match.length === 2) {
-    //   var oldNick = nickName;
-    //   nickName = match[1];
-    //   $scope.message = '';
-    //     console.log($scope.messageLog);
-    //   $scope.messageLog = messageFormatter(new Date(),
-    //       nickName, 'nickname changed - from ' +
-    //       oldNick + ' to ' + nickName + '!') + $scope.messageLog;
-    //   $scope.nickName = nickName;
-    // }
 
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
@@ -206,16 +195,7 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
         params: {position: me.position, name: username}
       }).then(function successCallback(response) {
          friends = [];
-         var fakeFriends = [{ position: {lat: 30.783775, lng: -128.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy'},
-    { position: {lat: 33.783775, lng: -120.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy2'},
-    { position: {lat: 41.783775, lng: -126.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy3'}
-  ];
         friends = response.data;
-
-
-        for (var i = 0; i < fakeFriends.length; i++) {
-          friends.push(fakeFriends[i]);
-        };
 
         NgMap.getMap().then(function (map) {
 
