@@ -1,5 +1,5 @@
 var app = angular.module('geoChat', ['ui.router', 'ngCookies', 'ngResource', 'ngSanitize','btford.socket-io', 'ngMap'])
-    .value('nickName', "");
+    .value('nickName', " ");
 var username;
 
 app.factory('User', ['$http', function( $http) {
@@ -152,7 +152,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
     $scope.$apply(function() {
       //$scope.messageLog = $scope.messageLog + messageFormatter(new Date(), data.source, data.payload);
-        $scope.messageLog = messageFormatter(new Date(), data.payload);
+        $scope.messageLog = messageFormatter(new Date(), data.source, data.payload);
 
         $scope.newMessages.push($scope.messageLog);
         console.log(username)
