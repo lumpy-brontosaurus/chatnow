@@ -143,9 +143,9 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
   $scope.$on('socket:broadcast', function (event, data) {
     $log.debug('got a message', event.name);
+      console.log("this is sending " + data)
     if (!data.payload) {
       $log.error('invalid message', 'event', event, 'data', JSON.stringify(data));
-      console.log("this is sending " + data)
       return;
     }
 
