@@ -111,9 +111,6 @@ app.controller('AuthCtrl', ["$scope", "User", function ($scope, User) {
 
 
 app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatter, nickName, $http) {
-    $interval(function () {
-       console.log('userName: ',username);
-   }, 1000);
     
     $scope.newMessages = [];
     $scope.nickName = username;
