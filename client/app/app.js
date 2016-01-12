@@ -112,7 +112,7 @@ app.controller('SocketCtrl', function ($log, $scope, chatSocket, messageFormatte
 
 
     $scope.sendMessage = function() {
-    var match = $scope.message.match('^\/nick (.*)');
+    var match = $scope.message.match('^\/name (.*)');
 
     $log.debug('sending message', $scope.message);
     chatSocket.emit('message', nickName, $scope.message);
@@ -164,13 +164,6 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
   };
   navigator.geolocation.getCurrentPosition(updateMyPosition);
 
-  //test
-  //friends.push(
-  //  {position: new google.maps.LatLng(parseFloat(-70), parseFloat(140)), name: 'Aj'},
-  //  {position: new google.maps.LatLng(parseFloat(-34), parseFloat(150)), name: 'Lyly'},
-  //  {position: new google.maps.LatLng(parseFloat(0), parseFloat(160)), name: 'Random'}
-  //);
-
   var init = function () {
 
     //update Positions
@@ -196,7 +189,6 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
           //add new markers
           // console.log(friends.length);
           for (var i = 0; i < friends.length; i++) {
-            console.log(friends[i].position);
             markers.push(new google.maps.Marker({
               position: friends[i].position,
               map: map,
@@ -219,9 +211,9 @@ app.factory('chatSocket', function (socketFactory) {
   return socket;
 });
 
-app.value('messageFormatter', function (date, nick, message) {
-  return date.toLocaleTimeString() + ' - ' +
-    nick + ' - ' +
+app.value('messageFormatter', function (date, name, message) {
+  return date.toLocaleTimeString() + ': ' +
+    name + ' - ' +
     message + '\n';
 
 });
@@ -246,5 +238,5 @@ app.config(function ($stateProvider, $urlRouterProvider) {
     url: '/map',
     templateUrl: 'app/map/map.html',
     controller: 'mapController'
-  })
+  });
 });
