@@ -205,7 +205,10 @@ app.controller('mapController', function ($scope, $interval, $http, NgMap) {
         url: 'https://chat-geo.herokuapp.com/location',
         params: {position: me.position, name: username}
       }).then(function successCallback(response) {
-        friends = [];
+         friends = [{ position: {lat: 30.783775, lng: -128.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy'},
+    { position: {lat: 33.783775, lng: -120.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy2'},
+    { position: {lat: 41.783775, lng: -126.4091839}, marker : new google.maps.Marker() , name: 'RandomGuy3'}
+  ];
         friends = response.data;
         NgMap.getMap().then(function (map) {
 
